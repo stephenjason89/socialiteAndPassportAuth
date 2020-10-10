@@ -1,0 +1,824 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+union Addressable = Store | User
+
+union Categoryable = Product
+
+union Characteristicable = Product | User
+
+union Contactable = Store | User
+
+union Cuisineable = Product | Store
+
+union Depositable = Payment_detail
+
+union Paymentable = Sale
+
+union Tagable = Product
+
+union Uploadable = Product | Store | User
+
+union Walletable = Store | User
+
+type Address {
+    addressable: Addressable!
+    barangay: String!
+    building: String
+    city: String!
+    country: String!
+    created_at: DateTime!
+    deleted_at: DateTime
+    floor: String
+    id: ID!
+    landmark: String!
+    latitude: Float
+    longitude: Float
+    name: String!
+    street: String!
+    subdivision: String
+    unit: String!
+    updated_at: DateTime!
+    zip: String!
+}
+
+type AuthPayload {
+    access_token: String
+    expires_in: Int
+    refresh_token: String
+    token_type: String
+    user: User
+}
+
+type Category {
+    categoryable: [Categoryable]!
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    name: String
+    parent_id: ID
+    updated_at: DateTime!
+}
+
+type Characteristic {
+    characteristicable: [Characteristicable]!
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    name: String!
+    parent_id: ID
+    updated_at: DateTime!
+}
+
+type Contact_detail {
+    area_code: String
+    contactable: Contactable!
+    country_code: String
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    number: String
+    type: String
+    updated_at: DateTime!
+}
+
+type Courier {
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    name: String!
+    orders: [Order]!
+    updated_at: DateTime!
+}
+
+type Cuisine {
+    created_at: DateTime!
+    cuisineable: [Cuisineable]!
+    deleted_at: DateTime
+    id: ID!
+    name: String!
+    updated_at: DateTime!
+}
+
+type Deposit {
+    amount: Float!
+    created_at: DateTime!
+    deleted_at: DateTime
+    depositable: [Depositable]!
+    id: ID!
+    updated_at: DateTime!
+    wallet: Wallet!
+}
+
+type Destination {
+    address: Address
+    arrived_at: DateTime
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    navigation: Navigation
+    updated_at: DateTime!
+}
+
+type ForgotPasswordResponse {
+    message: String
+    status: String!
+}
+
+type Location {
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    latitude: Float
+    longitude: Float
+    navigation: Navigation
+    updated_at: DateTime!
+}
+
+type LogoutResponse {
+    message: String
+    status: String!
+}
+
+type Mutation {
+    createDestination(address_id: ID!, navigation_id: ID!): Destination
+    createLocation(description: String, latitude: Float!, longitude: Float!, navigation_id: ID!): Location
+    createNavigation(description: String!, user_id: ID): Navigation
+    createStore(name: String!): Store
+    forgotPassword(input: ForgotPasswordInput!): ForgotPasswordResponse!
+    login(input: LoginInput): AuthPayload!
+    logout: LogoutResponse!
+    refreshToken(input: RefreshTokenInput): RefreshTokenPayload!
+    register(input: RegisterInput): RegisterResponse!
+    socialLogin(input: SocialLoginInput!): AuthPayload!
+    updateAddress(id: ID, latitude: Float!, longitude: Float!): Address
+    updateDestination(address_id: ID, arrived_at: DateTime, has_arrived: Boolean, id: ID!): Destination
+    updateForgottenPassword(input: NewPasswordWithCodeInput): ForgotPasswordResponse!
+    updateNavigation(completed_at: DateTime, id: ID!, started_at: DateTime): Navigation
+    updatePassword(input: UpdatePassword!): UpdatePasswordResponse!
+    updateStore(id: ID!, name: String): Store
+    verifyEmail(input: VerifyEmailInput!): AuthPayload!
+}
+
+type Navigation {
+    completed_at: DateTime
+    created_at: DateTime!
+    deleted_at: DateTime
+    description: String
+    destinations: [Destination]
+    id: ID!
+    locations: [Location]
+    started_at: DateTime
+    updated_at: DateTime!
+    user: User
+}
+
+"A paginated list of Navigation items."
+type NavigationPaginator {
+    "A list of Navigation items."
+    data: [Navigation!]!
+    "Pagination information about the list of items."
+    paginatorInfo: PaginatorInfo!
+}
+
+type Order {
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    order_details: [Order_detail!]!
+    sale: Sale
+    total: Float!
+    updated_at: DateTime!
+}
+
+type Order_detail {
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    order: Order!
+    product: Product!
+    updated_at: DateTime!
+}
+
+"Pagination information about the corresponding list of items."
+type PageInfo {
+    "Count of nodes in current request."
+    count: Int
+    "Current page of request."
+    currentPage: Int
+    "When paginating forwards, the cursor to continue."
+    endCursor: String
+    "When paginating forwards, are there more items?"
+    hasNextPage: Boolean!
+    "When paginating backwards, are there more items?"
+    hasPreviousPage: Boolean!
+    "Last page in connection."
+    lastPage: Int
+    "When paginating backwards, the cursor to continue."
+    startCursor: String
+    "Total number of node in connection."
+    total: Int
+}
+
+"Pagination information about the corresponding list of items."
+type PaginatorInfo {
+    "Total count of available items in the page."
+    count: Int!
+    "Current pagination page."
+    currentPage: Int!
+    "Index of first item in the current page."
+    firstItem: Int
+    "If collection has more pages."
+    hasMorePages: Boolean!
+    "Index of last item in the current page."
+    lastItem: Int
+    "Last page number of the collection."
+    lastPage: Int!
+    "Number of items per page in the collection."
+    perPage: Int!
+    "Total items available in the collection."
+    total: Int!
+}
+
+type Payment {
+    created_at: DateTime!
+    deleted_at: DateTime
+    deposits: [Deposit]!
+    id: ID!
+    payment_details: [Payment_detail]!
+    paymentable: Paymentable
+    total: Float!
+    updated_at: DateTime!
+}
+
+type Payment_detail {
+    amount: Float!
+    created_at: DateTime!
+    deleted_at: DateTime
+    deposits: Deposit!
+    id: ID!
+    payment_type: Payment_type!
+    updated_at: DateTime!
+}
+
+type Payment_type {
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    payment_detail: [Payment_detail]!
+    updated_at: DateTime!
+    wallets: [Wallet]!
+}
+
+type Price {
+    amount: Float!
+    created_at: DateTime!
+    deleted_at: DateTime
+    effective_at: DateTime
+    id: ID!
+    product: Product
+    updated_at: DateTime!
+}
+
+"A paginated list of Price items."
+type PricePaginator {
+    "A list of Price items."
+    data: [Price!]!
+    "Pagination information about the list of items."
+    paginatorInfo: PaginatorInfo!
+}
+
+type Product {
+    barcode: String
+    categories: [Category]!
+    characteristics: [Characteristic]!
+    coverPhoto(default: Boolean = true): [Upload]!
+    created_at: DateTime!
+    cuisines: [Cuisine]!
+    deleted_at: DateTime
+    description: String
+    id: ID!
+    item_code: String
+    name: String!
+    prices(
+        effective_at: DateTime,
+        "Limits number of fetched elements."
+        first: Int = 1,
+        orderBy: [PricesOrderByOrderByClause!],
+        "The offset from which elements are returned."
+        page: Int
+    ): PricePaginator
+    reviews: [Review]
+    store: Store
+    tags: [Tag]!
+    updated_at: DateTime!
+    uploads: [Upload]!
+}
+
+"A paginated list of Product items."
+type ProductPaginator {
+    "A list of Product items."
+    data: [Product!]!
+    "Pagination information about the list of items."
+    paginatorInfo: PaginatorInfo!
+}
+
+type Query {
+    address(id: ID): Address
+    categorySearch(search: String): [Category!]!
+    complexWhereUser(where: ComplexWhereUserWhereWhereConditions): [User!]!
+    cuisineSearch(search: String): [Cuisine!]!
+    destination(id: ID, trashed: String): Destination
+    destinations(navigation_id: ID): [Destination!]!
+    location(id: ID, trashed: String): Location
+    locations(navigation_id: ID): [Location!]!
+    me: User
+    navigation(id: ID, trashed: String): Navigation
+    navigations(
+        "Limits number of fetched elements."
+        first: Int = 25,
+        "The offset from which elements are returned."
+        page: Int
+    ): NavigationPaginator
+    product(id: ID, trashed: String): Product
+    productReviews(
+        "Limits number of fetched elements."
+        first: Int!,
+        "The offset from which elements are returned."
+        page: Int,
+        product_id: ID
+    ): ReviewPaginator
+    productSearch(search: String): [Product!]!
+    products(
+        "Limits number of fetched elements."
+        first: Int = 25,
+        hasCategories: ProductsHasCategoriesWhereConditions,
+        hasCuisines: ProductsHasCuisinesWhereConditions,
+        hasUploads: ProductsHasUploadsWhereConditions,
+        "The offset from which elements are returned."
+        page: Int
+    ): ProductPaginator
+    review(id: ID): Review
+    store(id: ID, trashed: String): Store
+    storeSearch(search: String): [Store!]!
+    stores(
+        "Limits number of fetched elements."
+        first: Int!,
+        hasUploads: StoresHasUploadsWhereConditions,
+        "The offset from which elements are returned."
+        page: Int
+    ): StorePaginator
+    user(id: ID): User
+    userNavigations(user_id: ID): [Navigation!]!
+    userReviews(
+        "Limits number of fetched elements."
+        first: Int!,
+        "The offset from which elements are returned."
+        page: Int,
+        user_id: ID
+    ): ReviewPaginator
+    userSearch(search: String): [User!]!
+    users(
+        "Limits number of fetched elements."
+        first: Int = 25,
+        "The offset from which elements are returned."
+        page: Int
+    ): UserPaginator
+}
+
+type RefreshTokenPayload {
+    access_token: String!
+    expires_in: Int!
+    refresh_token: String!
+    token_type: String!
+}
+
+type RegisterResponse {
+    status: RegisterStatuses!
+    tokens: AuthPayload
+}
+
+type Review {
+    comment: String!
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    product: Product!
+    title: String!
+    updated_at: DateTime!
+    user: User!
+}
+
+"A paginated list of Review items."
+type ReviewPaginator {
+    "A list of Review items."
+    data: [Review!]!
+    "Pagination information about the list of items."
+    paginatorInfo: PaginatorInfo!
+}
+
+type Role {
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    name: String!
+    updated_at: DateTime!
+    users: [User]
+}
+
+type Sale {
+    created_at: DateTime!
+    deleted_at: DateTime!
+    id: ID!
+    order_details: [Order_detail!]!
+    orders: [Order!]!
+    payment: Payment!
+    total: Float!
+    updated_at: DateTime!
+}
+
+type Social_account {
+    id: ID!
+    provider_id: String!
+    provider_name: String!
+    user: User
+}
+
+type Store {
+    address: [Address]!
+    categories: [Category]!
+    contact_details: [Contact_detail!]!
+    created_at: DateTime!
+    cuisines: [Cuisine]
+    deleted_at: DateTime
+    description: String
+    followers_count: Int
+    id: ID!
+    location: String
+    name: String!
+    preparation_time: DateTime
+    products: [Product]!
+    radius: String
+    rating: Float
+    reviews: [Review]!
+    store_hours: Json
+    updated_at: DateTime!
+    uploads: [Upload]!
+    url: String
+    users: [User!]!
+    wallets: [Wallet]!
+}
+
+"A paginated list of Store items."
+type StorePaginator {
+    "A list of Store items."
+    data: [Store!]!
+    "Pagination information about the list of items."
+    paginatorInfo: PaginatorInfo!
+}
+
+type Subscription {
+    storeUpdated(id: ID): Store
+}
+
+type Tag {
+    created_at: DateTime!
+    deleted_at: DateTime
+    id: ID!
+    name: String!
+    tagable: [Tagable]!
+    updated_at: DateTime!
+}
+
+type UpdatePasswordResponse {
+    message: String
+    status: String!
+}
+
+type Upload {
+    created_at: DateTime!
+    deleted_at: DateTime
+    filename: String!
+    id: ID!
+    name: String!
+    tag: String!
+    updated_at: DateTime!
+    uploadable: Uploadable!
+    uploadable_id: ID
+    url: String!
+    user: User
+}
+
+type User {
+    addresses: [Address]!
+    age: String
+    birthday: String
+    contact_details: [Contact_detail!]!
+    created_at: DateTime!
+    deleted_at: DateTime
+    email: Email!
+    gender: String
+    id: ID!
+    name: String!
+    nickname: String
+    reviews: [Review]!
+    rider: Boolean!
+    roles: [Role]!
+    seller: Boolean!
+    stores: [Store]!
+    updated_at: DateTime!
+    uploads: [Upload]!
+    username: String
+    wallets: [Wallet]!
+}
+
+"A paginated list of User items."
+type UserPaginator {
+    "A list of User items."
+    data: [User!]!
+    "Pagination information about the list of items."
+    paginatorInfo: PaginatorInfo!
+}
+
+type Wallet {
+    balance: Float!
+    created_at: DateTime!
+    deleted_at: DateTime
+    deposits: [Deposit]!
+    details: String!
+    id: ID!
+    name: String!
+    payment_details: [Payment_detail]!
+    payments: [Payment]!
+    updated_at: DateTime!
+    walletable: Walletable!
+}
+
+"Allowed column names for the `where` argument on the query `complexWhereUser`."
+enum ComplexWhereUserWhereColumn {
+    AGE
+    NAME
+    NICKNAME
+    USERNAME
+}
+
+"Allowed column names for the `orderBy` argument on the query `prices`."
+enum PricesOrderByColumn {
+    EFFECTIVE_AT
+}
+
+"Allowed column names for the `hasCategories` argument on the query `products`."
+enum ProductsHasCategoriesColumn {
+    ID
+    NAME
+}
+
+"Allowed column names for the `hasCuisines` argument on the query `products`."
+enum ProductsHasCuisinesColumn {
+    ID
+    NAME
+}
+
+"Allowed column names for the `hasUploads` argument on the query `products`."
+enum ProductsHasUploadsColumn {
+    DEFAULT
+    NAME
+    URL
+}
+
+enum RegisterStatuses {
+    MUST_VERIFY_EMAIL
+    SUCCESS
+}
+
+"The available SQL operators that are used to filter query results."
+enum SQLOperator {
+    "Whether a value is within a range of values (`BETWEEN`)"
+    BETWEEN
+    "Equal operator (`=`)"
+    EQ
+    "Greater than operator (`>`)"
+    GT
+    "Greater than or equal operator (`>=`)"
+    GTE
+    "Whether a value is within a set of values (`IN`)"
+    IN
+    "Whether a value is not null (`IS NOT NULL`)"
+    IS_NOT_NULL
+    "Whether a value is null (`IS NULL`)"
+    IS_NULL
+    "Simple pattern matching (`LIKE`)"
+    LIKE
+    "Less than operator (`<`)"
+    LT
+    "Less than or equal operator (`<=`)"
+    LTE
+    "Not equal operator (`!=`)"
+    NEQ
+    "Whether a value is not within a range of values (`NOT BETWEEN`)"
+    NOT_BETWEEN
+    "Whether a value is not within a set of values (`NOT IN`)"
+    NOT_IN
+    "Negation of simple pattern matching (`NOT LIKE`)"
+    NOT_LIKE
+}
+
+"The available directions for ordering a list of records."
+enum SortOrder {
+    "Sort records in ascending order."
+    ASC
+    "Sort records in descending order."
+    DESC
+}
+
+"Allowed column names for the `hasUploads` argument on the query `stores`."
+enum StoresHasUploadsColumn {
+    DEFAULT
+    NAME
+    URL
+}
+
+"Specify if you want to include or exclude trashed results from a query."
+enum Trashed {
+    "Only return trashed results."
+    ONLY
+    "Return both trashed and non-trashed results."
+    WITH
+    "Only return non-trashed results."
+    WITHOUT
+}
+
+"Dynamic WHERE conditions for the `where` argument on the query `complexWhereUser`."
+input ComplexWhereUserWhereWhereConditions {
+    "A set of conditions that requires all conditions to match."
+    AND: [ComplexWhereUserWhereWhereConditions!]
+    "A set of conditions that requires at least one condition to match."
+    OR: [ComplexWhereUserWhereWhereConditions!]
+    "The column that is used for the condition."
+    column: ComplexWhereUserWhereColumn
+    "The operator that is used for the condition."
+    operator: SQLOperator = EQ
+    "The value that is used for the condition."
+    value: Mixed
+}
+
+input ForgotPasswordInput {
+    email: String!
+}
+
+input LoginInput {
+    password: String!
+    username: String!
+}
+
+input NewPasswordWithCodeInput {
+    email: String!
+    password: String!
+    password_confirmation: String!
+    token: String!
+}
+
+"Allows ordering a list of records."
+input OrderByClause {
+    "The column that is used for ordering."
+    field: String!
+    "The direction that is used for ordering."
+    order: SortOrder!
+}
+
+"Order by clause for the `orderBy` argument on the query `prices`."
+input PricesOrderByOrderByClause {
+    "The column that is used for ordering."
+    field: PricesOrderByColumn!
+    "The direction that is used for ordering."
+    order: SortOrder!
+}
+
+"Dynamic WHERE conditions for the `hasCategories` argument on the query `products`."
+input ProductsHasCategoriesWhereConditions {
+    "A set of conditions that requires all conditions to match."
+    AND: [ProductsHasCategoriesWhereConditions!]
+    "A set of conditions that requires at least one condition to match."
+    OR: [ProductsHasCategoriesWhereConditions!]
+    "The column that is used for the condition."
+    column: ProductsHasCategoriesColumn
+    "The operator that is used for the condition."
+    operator: SQLOperator = EQ
+    "The value that is used for the condition."
+    value: Mixed
+}
+
+"Dynamic WHERE conditions for the `hasCuisines` argument on the query `products`."
+input ProductsHasCuisinesWhereConditions {
+    "A set of conditions that requires all conditions to match."
+    AND: [ProductsHasCuisinesWhereConditions!]
+    "A set of conditions that requires at least one condition to match."
+    OR: [ProductsHasCuisinesWhereConditions!]
+    "The column that is used for the condition."
+    column: ProductsHasCuisinesColumn
+    "The operator that is used for the condition."
+    operator: SQLOperator = EQ
+    "The value that is used for the condition."
+    value: Mixed
+}
+
+"Dynamic WHERE conditions for the `hasUploads` argument on the query `products`."
+input ProductsHasUploadsWhereConditions {
+    "A set of conditions that requires all conditions to match."
+    AND: [ProductsHasUploadsWhereConditions!]
+    "A set of conditions that requires at least one condition to match."
+    OR: [ProductsHasUploadsWhereConditions!]
+    "The column that is used for the condition."
+    column: ProductsHasUploadsColumn
+    "The operator that is used for the condition."
+    operator: SQLOperator = EQ
+    "The value that is used for the condition."
+    value: Mixed
+}
+
+input RefreshTokenInput {
+    refresh_token: String
+}
+
+input RegisterInput {
+    age: Int
+    birthday: Date
+    email: String!
+    gender: String
+    name: String!
+    nickname: String
+    password: String!
+    password_confirmation: String!
+    username: String!
+}
+
+input SocialLoginInput {
+    provider: String!
+    token: String!
+}
+
+"Dynamic WHERE conditions for the `hasUploads` argument on the query `stores`."
+input StoresHasUploadsWhereConditions {
+    "A set of conditions that requires all conditions to match."
+    AND: [StoresHasUploadsWhereConditions!]
+    "A set of conditions that requires at least one condition to match."
+    OR: [StoresHasUploadsWhereConditions!]
+    "The column that is used for the condition."
+    column: StoresHasUploadsColumn
+    "The operator that is used for the condition."
+    operator: SQLOperator = EQ
+    "The value that is used for the condition."
+    value: Mixed
+}
+
+input UpdatePassword {
+    old_password: String!
+    password: String!
+    password_confirmation: String!
+}
+
+input VerifyEmailInput {
+    token: String!
+}
+
+"Dynamic WHERE conditions for queries."
+input WhereConditions {
+    "A set of conditions that requires all conditions to match."
+    AND: [WhereConditions!]
+    "A set of conditions that requires at least one condition to match."
+    OR: [WhereConditions!]
+    "The column that is used for the condition."
+    column: String
+    "The operator that is used for the condition."
+    operator: SQLOperator = EQ
+    "The value that is used for the condition."
+    value: Mixed
+}
+
+
+"A [RFC 5321](https://tools.ietf.org/html/rfc5321) compliant email."
+scalar Email
+
+"Arbitrary data encoded in JavaScript Object Notation. See https://www.json.org/."
+scalar Json
+
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+scalar DateTime
+
+"""
+Loose type that allows any value. Be careful when passing in large `Int` or `Float` literals,
+as they may not be parsed correctly on the server side. Use `String` literals if you are
+dealing with really large numbers to be on the safe side.
+"""
+scalar Mixed
+
+"A date string with format `Y-m-d`, e.g. `2011-05-23`."
+scalar Date
+
+"A datetime and timezone string in ISO 8601 format `Y-m-dTH:i:sO`, e.g. `2020-04-20T13:53:12+02:00`."
+scalar DateTimeTz

@@ -1,0 +1,25 @@
+{
+    "projects": {
+        "local": {
+            "schemaPath": "./graphql/schema.graphql",
+            "includes": ["./graphql/**"]
+        },
+        "remote": {
+            "schemaPath": "introspection.graphql",
+            "excludes": [
+                "./graphql/**"
+            ],
+            "extensions": {
+                "endpoints": {
+                    "Default GraphQL Endpoint": {
+                        "url": "http://localhost/graphql",
+                        "headers": {
+                            "user-agent": "JS GraphQL"
+                        },
+                        "introspect": true
+                    }
+                }
+            }
+        }
+    }
+}

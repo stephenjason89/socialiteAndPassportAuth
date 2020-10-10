@@ -1,0 +1,6 @@
+{
+    "Accounting": true,
+    "Timekeeper": true,
+    "Payroll": true,
+    "Customer": true
+}
